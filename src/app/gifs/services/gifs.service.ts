@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GIfsResponse, Gif } from '../interface/gifs.interface';
+import { catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,11 @@ export class GifsService {
     .subscribe( ({data:responseData}: GIfsResponse) => {
       this.response=responseData;
       localStorage.setItem('results',JSON.stringify(this.response));
-    } )
+    }, (err) => {
+      console.error('Error al buscar gifs:', err);
+      localStorage.setItem('results',JSON.stringify([]));
+      }
+    );
    
   }
 
